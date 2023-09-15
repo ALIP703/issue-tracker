@@ -24,9 +24,22 @@ router.post('/projects', verifyToken, (req, res) => {
             })
             .catch((err) => {
                 // Handle errors from createAdmin function
-                res.status(500).json({ message: err.message ?? "An error occurred during admin creation!" });
+                res.status(500).json({ message: err.message ?? "An error occurred!" });
             });
     }
+})
+router.post('/project', verifyToken, (req, res) => {
+    if (!(req.body.name && req.body.description)) {
+        return res.status(500).json({ message: "An error occurred!" });
+    }
+    admin_helper.createProject(req.body)
+        .then((response) => {
+            res.status(200).json({ data: response, message: "Projects create successfully" });
+        })
+        .catch((err) => {
+            // Handle errors from createAdmin function
+            res.status(500).json({ message: err.message ?? "An error occurred!" });
+        });
 })
 
 module.exports = router;

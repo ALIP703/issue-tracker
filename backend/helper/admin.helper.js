@@ -105,5 +105,24 @@ module.exports = {
             }
 
         })
+    },
+    createProject: async (data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let query = "INSERT INTO projects (name, description) VALUES (?, ?)";
+                let values = [data.name, data.description];
+                // Execute the INSERT INTO query to create the admin
+                db.query(query, values, function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result.insertId);
+                    }
+                });
+            } catch (err) {
+                console.log('test');
+                reject(err); // Reject the Promise with the error
+            }
+        })
     }
 }
