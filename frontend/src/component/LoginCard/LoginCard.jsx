@@ -1,26 +1,35 @@
 import { Card, Button } from "react-bootstrap";
 import "./LoginCard.css";
 import { handleLoginDataChange, useLoginData } from "./Helper";
+import { useNavigate } from "react-router-dom";
+import { ApiServices } from "../../api/api";
 
 function LoginCard() {
+  const navigate = useNavigate();
+  const handleSignUp = async (event, loginData, setLoginData) => {
+    event.preventDefault();
+    await ApiServices.login(loginData)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem('token', res.data.token);
+        setLoginData({
+          username: "",
+          password: "",
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   const { loginData, setLoginData } = useLoginData();
   return (
     <div className="login-container">
       <Card className="card">
         <h3>Sign-up</h3>
         <form
-          onSubmit={(event) => {
-              handleSignUp(
-                event,
-                file,
-                userData,
-                setModelShow,
-                setTableData,
-                setImagePreviewUrl,
-                setUserData
-              );
-            
-          }}
+          onSubmit={(event) => handleSignUp(event, loginData, setLoginData)}
         >
           <input
             className="form-control"

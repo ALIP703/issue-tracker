@@ -7,7 +7,6 @@ export const useLoginData = () => {
     });
     return { loginData, setLoginData };
 };
-
 export const handleLoginDataChange = (event, loginData, setLoginData) => {
     if (loginData) {
         setLoginData({
@@ -15,9 +14,4 @@ export const handleLoginDataChange = (event, loginData, setLoginData) => {
             [event.target.name]: event.target.value,
         });
     }
-    console.log(loginData);
 };
-
-export const handleSignUp=(event,loginData,setLoginData)=>{
-    
-}
