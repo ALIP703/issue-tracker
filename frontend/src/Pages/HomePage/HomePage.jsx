@@ -4,6 +4,7 @@ import NavBar from "../../component/NavBar/NavBar";
 import ProjectCard from "../../component/ProjectCard/ProjectCard";
 import { Button } from "react-bootstrap";
 import "./HomePage.css";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [projects, setProjects] = React.useState([]);
@@ -13,17 +14,17 @@ function HomePage() {
     console.log(searchData);
     await ApiServices.projectsBySearch({ data: searchData })
       .then((res) => {
-        console.log(res);
         setProjects(res.data.data);
       })
       .catch((err) => {
         console.error(err);
       });
   };
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     ApiServices.projects()
       .then((res) => {
-        console.log(res.data.data);
         setProjects(res.data.data);
       })
       .catch();
@@ -34,7 +35,9 @@ function HomePage() {
       <div className="container-fluid project-cards">
         <div className="container-fluid project-cards d-flex justify-content-between align-items-center">
           <div>
-            <Button>Create Project</Button>
+            <Button onClick={()=>{
+              navigate('/add-project')
+            }}>Create Project</Button>
           </div>
           <div>
             <form
@@ -68,6 +71,9 @@ function HomePage() {
               description={item.description}
               status={item.status}
               issueCount={item?.issueCount}
+              onClick={()=>{
+                navigate('/project')
+              }}
             />
           ))}
       </div>

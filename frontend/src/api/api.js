@@ -22,4 +22,7 @@ export const ApiServices = {
     projectsBySearch: (data) => {
         return api.post("/admin/projects", data);
     },
+    createProject: (data) => {
+        return api.post("/admin/project", data);
+    },
 }

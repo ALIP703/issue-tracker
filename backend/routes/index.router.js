@@ -37,6 +37,7 @@ router.post('/project', verifyToken, (req, res) => {
             res.status(200).json({ data: response, message: "Projects create successfully" });
         })
         .catch((err) => {
+            console.log(err.message);
             // Handle errors from createAdmin function
             res.status(500).json({ message: err.message ?? "An error occurred!" });
         });
