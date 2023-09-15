@@ -13,6 +13,7 @@ db.connect(function (err) {
         console.error('Database connection error:', err);
     } else {
         console.log('db connected');
+        console.log(`server running on ${process.env.server}`);
     }
 });
 
