@@ -23,4 +23,21 @@ router.post('/sign-up', validateSignUpBody, (req, res) => {
     });
 });
 
+router.post('/sign-in', validateSignUpBody, (req, res) => {
+  // body validation error
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array(), message: "body validation failed!" });
+  }
+  //service
+  admin_helper.login(req.body)
+    .then((response) => {
+      res.status(200).json({ response, message: "Admin Login" });
+    })
+    .catch((err) => {
+      // Handle errors from createAdmin function
+      res.status(500).json({ message: err.message || "An error occurred during admin creation!" });
+    });
+})
+
 module.exports = router;
