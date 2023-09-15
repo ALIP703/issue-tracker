@@ -7,6 +7,7 @@ const session = require('express-session');
 const bodyParser = require("body-parser")
 
 var authRouter = require('./routes/auth.router');
+var indexRouter = require('./routes/index.router');
 const db = require('./config/connection');
 
 var app = express();
@@ -43,5 +44,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', authRouter);
+app.use('/admin', indexRouter);
 
 module.exports = app;

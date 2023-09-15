@@ -17,6 +17,6 @@ export const ApiServices = {
         return api.post("/sign-in", data);
     },
     projects: () => {
-        return api.get("/test");
+        return api.get("/admin/projects");
     },
 }

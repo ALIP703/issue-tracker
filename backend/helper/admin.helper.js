@@ -55,5 +55,24 @@ module.exports = {
                 reject(err); // Reject the Promise with the error
             }
         })
+    },
+    getProjects: async (userDate) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                db.query("SELECT p.id AS id, p.name AS name, p.description AS description, p.status AS status, COUNT(CASE WHEN i.status = 'open' THEN i.id ELSE NULL END) AS issueCount FROM projects p LEFT JOIN issues i ON p.id = i.projectId GROUP BY p.id, p.name", async function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        if (result.length > 0) {
+                            resolve(result);
+                        } else {
+                            reject(new Error("Projects Not Found"));
+                        }
+                    }
+                });
+            } catch (err) {
+                reject(err);
+            }
+        })
     }
 }
