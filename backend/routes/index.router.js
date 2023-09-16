@@ -65,16 +65,20 @@ router.put('/project/:id', verifyToken, (req, res) => {
 })
 
 router.post('/issues', verifyToken, (req, res) => {
-    if (req.body.search != undefined) {
-        admin_helper.getIssueBySearch(req.body.search)
+    if (req.body) {
+        admin_helper.getIssueByFilter(req.body)
             .then((response) => {
-                res.status(200).json({ data: response, message: "Projects successfully fetch" });
+                res.status(200).json({ data: response, message: "Issue successfully fetched" });
             })
             .catch((err) => {
-                // Handle errors from createAdmin function
+                // Handle errors from getIssueByFilter function
                 res.status(500).json({ message: err.message ?? "An error occurred!" });
             });
+    } else {
+        // Moved the response inside the else block
+        res.status(500).json({ message: "An error occurred!" });
     }
-})
+});
+
 
 module.exports = router;

@@ -153,32 +153,47 @@ module.exports = {
 
         })
     },
-    getIssueBySearch: async (data) => {
+    getIssueByFilter: async (data) => {
         return new Promise(async (resolve, reject) => {
             try {
-                // data is a string containing the search term
-                let searchTerm = data;
-                db.query(
-                    `SELECT * FROM issues i 
-                    WHERE i.tracker LIKE ? OR i.description LIKE ?`,
-                    [`%${searchTerm}%`, `%${searchTerm}%`], 
-                    async function (err, result) {
-                        if (err) {
-                            reject(err);
+
+                let query = `SELECT * FROM issues i WHERE 1`; // Start with a base query that always returns all issues
+
+                const queryParams = []; // Array to hold the query parameters
+
+                if (data.search) {
+                    // If 'search' is included in data, add the search condition
+                    const searchTerm = `%${data.search}%`;
+                    query += ` AND (i.tracker LIKE ? OR i.description LIKE ?)`;
+                    queryParams.push(searchTerm, searchTerm); // Add search parameters to queryParams
+                }
+
+                if (data.tracker) {
+                    // If 'tracker' is included in data, add the tracker condition
+                    query += ` AND i.tracker = ?`;
+                    queryParams.push(data.tracker); // Add tracker parameter to queryParams
+                }
+
+                if (data.status) {
+                    // If 'status' is included in data, add the status condition
+                    query += ` AND i.status = ?`;
+                    queryParams.push(data.status); // Add status parameter to queryParams
+                }
+                db.query(query, queryParams, async function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        if (result.length > 0) {
+                            resolve(result);
                         } else {
-                            if (result.length > 0) {
-                                resolve(result);
-                            } else {
-                                reject(new Error("Issues Not Found"));
-                            }
+                            reject(new Error("Issues Not Found"));
                         }
                     }
-                );
+                });
             } catch (err) {
                 reject(err);
             }
-
-        })
+        });
     },
     createProject: async (data) => {
         return new Promise(async (resolve, reject) => {

@@ -32,6 +32,6 @@ export const ApiServices = {
         return api.put(`/admin/project/${id}`, data);
     },
     issuesBySearch: (data) => {
-        return api.post("/admin/issues", { search: data });
+        return api.post("/admin/issues", data);
     },
 }

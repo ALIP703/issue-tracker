@@ -1,19 +1,23 @@
 import React from "react";
 import NavBar from "../../component/NavBar/NavBar";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
 import { useLocation } from "react-router-dom";
 import { ApiServices } from "../../api/api";
 import Card from "react-bootstrap/Card";
 import "./ViewProject.css";
 import IssueCard from "../../component/IssueCard/IssueCard";
 import DynamicModal from "../../component/DynamicModal/DynamicModal";
+import { Form } from "react-bootstrap";
 
 function ViewProject() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const projectId = queryParams.get("id");
-  const [issueSearchData, setIssueSearchData] = React.useState("");
+  const [issueSearchData, setIssueSearchData] = React.useState({
+    search: null,
+    tracker: null,
+    status: null,
+  });
 
   const [projectData, setProjectData] = React.useState({
     id: 0,
@@ -69,6 +73,19 @@ function ViewProject() {
       });
     handleCloseModal();
   };
+
+  const handleFilterChange = (event, issueSearchData, setIssueSearchData) => {
+    const { name, value } = event.target;
+    // Check if the value is an empty string and set it to null if true
+    const newValue = value === "" ? null : value;
+    if (issueSearchData) {
+      setIssueSearchData({
+        ...issueSearchData,
+        [name]: newValue,
+      });
+    }
+  };
+  
   const handleSearch = async (event, searchData) => {
     event.preventDefault();
     ApiServices.issuesBySearch(searchData)
@@ -88,7 +105,6 @@ function ViewProject() {
       setProjectData(res.data.data);
     });
   }, [projectId]);
-  console.log(projectData);
   return (
     <div className="view-project">
       <NavBar />
@@ -140,51 +156,63 @@ function ViewProject() {
                 className="d-flex justify-content-end align-content-center"
                 style={{ alignContent: "center" }}
               >
-                <Dropdown style={{ marginRight: "1rem" }}>
-                  <Dropdown.Toggle
-                    variant="success"
-                    id="dropdown-tracker"
-                    size="sm"
-                  >
-                    Tracker
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item>Feature</Dropdown.Item>
-                    <Dropdown.Item>Bug</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown style={{ marginRight: "1rem" }}>
-                  <Dropdown.Toggle
-                    variant="success"
-                    id="dropdown-status"
-                    size="sm"
-                  >
-                    Status
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item>Open</Dropdown.Item>
-                    <Dropdown.Item>Closed</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
                 <form
                   className="d-flex"
                   onSubmit={(event) => {
                     handleSearch(event, issueSearchData);
                   }}
                 >
+                  <Form.Select
+                    size="sm"
+                    style={{ marginRight: "1rem" }}
+                    name="tracker"
+                    onChange={(event) => {
+                      handleFilterChange(
+                        event,
+                        issueSearchData,
+                        setIssueSearchData
+                      );
+                    }}
+                  >
+                    <option value="">Tracker</option>
+                    <option value="Bug">Bug</option>
+                    <option value="Feature">Feature</option>
+                  </Form.Select>
+                  <Form.Select
+                    size="sm"
+                    style={{ marginRight: "1rem" }}
+                    name="status"
+                    onChange={(event) => {
+                      handleFilterChange(
+                        event,
+                        issueSearchData,
+                        setIssueSearchData
+                      );
+                    }}
+                  >
+                    <option value="">Status</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                  </Form.Select>
                   <input
                     className="form-control me-2"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
-                    value={issueSearchData}
+                    value={issueSearchData.search}
                     name="search"
                     onChange={(event) => {
-                      setIssueSearchData(event.target.value);
+                      handleFilterChange(
+                        event,
+                        issueSearchData,
+                        setIssueSearchData
+                      );
                     }}
-                    style={{ height: "2rem", marginRight: "1rem" }}
+                    style={{
+                      height: "2rem",
+                      marginRight: "1rem",
+                      width: "200px",
+                    }}
                   />
                   <Button
                     variant="outline-success"
