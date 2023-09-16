@@ -80,5 +80,15 @@ router.post('/issues', verifyToken, (req, res) => {
     }
 });
 
+router.put('/issue/:id', verifyToken, (req, res) => {
+    admin_helper.updateIssueStatus(req.params.id, req.body)
+        .then((response) => {
+            res.status(200).json({ data: response, message: "Issue status Updated successfully" });
+        })
+        .catch((err) => {
+            // Handle errors from createAdmin function
+            res.status(500).json({ message: err.message ?? "An error occurred!" });
+        });
+})
 
 module.exports = router;

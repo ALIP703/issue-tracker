@@ -298,4 +298,24 @@ module.exports = {
             }
         });
     },
+    updateIssueStatus: async (issueId, newData) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                console.log(newData);
+                // Construct the SQL query to update the project
+                const queryUpdate = `UPDATE issues SET status=? WHERE id = ?`;
+
+                // Execute the UPDATE query to update the project
+                db.query(queryUpdate, [newData.status, issueId], function (errUpdate, resultUpdate) {
+                    if (errUpdate) {
+                        reject(errUpdate);
+                    } else {
+                        resolve(resultUpdate.affectedRows);
+                    }
+                });
+            } catch (err) {
+                reject(err); // Reject the Promise with the error
+            }
+        });
+    },
 }
