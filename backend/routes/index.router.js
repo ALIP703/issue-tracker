@@ -64,4 +64,17 @@ router.put('/project/:id', verifyToken, (req, res) => {
         });
 })
 
+router.post('/issues', verifyToken, (req, res) => {
+    if (req.body.search != undefined) {
+        admin_helper.getIssueBySearch(req.body.search)
+            .then((response) => {
+                res.status(200).json({ data: response, message: "Projects successfully fetch" });
+            })
+            .catch((err) => {
+                // Handle errors from createAdmin function
+                res.status(500).json({ message: err.message ?? "An error occurred!" });
+            });
+    }
+})
+
 module.exports = router;

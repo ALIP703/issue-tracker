@@ -153,6 +153,33 @@ module.exports = {
 
         })
     },
+    getIssueBySearch: async (data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // data is a string containing the search term
+                let searchTerm = data;
+                db.query(
+                    `SELECT * FROM issues i 
+                    WHERE i.tracker LIKE ? OR i.description LIKE ?`,
+                    [`%${searchTerm}%`, `%${searchTerm}%`], 
+                    async function (err, result) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            if (result.length > 0) {
+                                resolve(result);
+                            } else {
+                                reject(new Error("Issues Not Found"));
+                            }
+                        }
+                    }
+                );
+            } catch (err) {
+                reject(err);
+            }
+
+        })
+    },
     createProject: async (data) => {
         return new Promise(async (resolve, reject) => {
             try {
