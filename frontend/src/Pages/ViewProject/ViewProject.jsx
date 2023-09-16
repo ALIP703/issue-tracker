@@ -27,6 +27,34 @@ function ViewProject() {
       },
     ],
   });
+  const handleCloseProject = async () => {
+    await ApiServices.updateProject(projectData.id, { status: "closed" })
+      .then(async (res) => {
+        console.log(res);
+        if (res.status === 200) {
+          ApiServices.project(projectId).then((res) => {
+            setProjectData(res.data.data);
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  const handleOpenProject = async () => {
+    await ApiServices.updateProject(projectData.id, { status: "open" })
+      .then(async (res) => {
+        console.log(res);
+        if (res.status === 200) {
+          ApiServices.project(projectId).then((res) => {
+            setProjectData(res.data.data);
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   React.useEffect(() => {
     ApiServices.project(projectId).then((res) => {
       setProjectData(res.data.data);
@@ -41,9 +69,27 @@ function ViewProject() {
           <div className="d-flex justify-content-between align-items-center">
             <h1>{projectData.name}</h1>
             <div>
-              <Button variant="danger" style={{ marginRight: "1rem" }}>
-                Close Project
-              </Button>
+              {projectData?.status === "open" ? (
+                <Button
+                  variant="danger"
+                  style={{ marginRight: "1rem" }}
+                  onClick={() => {
+                    handleCloseProject();
+                  }}
+                >
+                  Close Project
+                </Button>
+              ) : (
+                <Button
+                  style={{ marginRight: "1rem" }}
+                  onClick={() => {
+                    handleOpenProject();
+                  }}
+                >
+                  Reopen project
+                </Button>
+              )}
+
               <Button variant="secondary" style={{ marginRight: "1rem" }}>
                 Create Issue
               </Button>
@@ -113,20 +159,20 @@ function ViewProject() {
               </div>
             </div>
           </div>
-          <h5 style={{marginLeft:'1.5rem'}}>Issues</h5>
+          <h5 style={{ marginLeft: "1.5rem" }}>Issues</h5>
           <div className="mb-5">
-          {projectData?.issues &&
-            projectData?.issues?.map((item) => (
-              <IssueCard
-                key={item.id}
-                id={item.id}
-                tracker={item.tracker}
-                description={item.description}
-                createdAt={item.createdAt}
-                status={item.status}
-              />
-            ))}
-            </div>
+            {projectData?.issues &&
+              projectData?.issues?.map((item) => (
+                <IssueCard
+                  key={item.id}
+                  id={item.id}
+                  tracker={item.tracker}
+                  description={item.description}
+                  createdAt={item.createdAt}
+                  status={item.status}
+                />
+              ))}
+          </div>
         </Card>
       </div>
     </div>
