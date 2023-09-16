@@ -42,6 +42,20 @@ router.post('/project', verifyToken, (req, res) => {
         });
 })
 
+router.post('/issue', verifyToken, (req, res) => {
+    if (!(req.body.tracker && req.body.description && req.body.projectId)) {
+        return res.status(500).json({ message: "An error occurred!" });
+    }
+    admin_helper.createIssue(req.body)
+        .then((response) => {
+            res.status(200).json({ data: response, message: "Issue create successfully" });
+        })
+        .catch((err) => {
+            // Handle errors from createAdmin function
+            res.status(500).json({ message: err.message ?? "An error occurred!" });
+        });
+})
+
 router.get('/project/:id', verifyToken, (req, res) => {
     admin_helper.getProjectById(req.params.id)
         .then((response) => {

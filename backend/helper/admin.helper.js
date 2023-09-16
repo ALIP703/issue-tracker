@@ -232,6 +232,43 @@ module.exports = {
         });
 
     },
+    createIssue: async (data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let queryCheck = "SELECT COUNT(*) AS count FROM issues WHERE tracker = ? AND description = ?";
+                let valuesCheck = [data.tracker, data.description];
+
+                // Execute the SELECT query to check for existing records
+                db.query(queryCheck, valuesCheck, function (errCheck, resultCheck) {
+                    if (errCheck) {
+                        reject(errCheck);
+                    } else {
+                        const recordCount = resultCheck[0].count;
+
+                        // If recordCount is greater than 0, it means a matching record exists
+                        if (recordCount > 0) {
+                            reject(new Error("Tracker with description is unique"));
+                        } else {
+                            let queryInsert = "INSERT INTO issues (tracker, description,projectId) VALUES (?, ?,?)";
+                            let valuesInsert = [data.tracker, data.description, data.projectId];
+
+                            // Execute the INSERT INTO query to create the project
+                            db.query(queryInsert, valuesInsert, function (errInsert, resultInsert) {
+                                if (errInsert) {
+                                    reject(errInsert);
+                                } else {
+                                    resolve(resultInsert.insertId);
+                                }
+                            });
+                        }
+                    }
+                });
+            } catch (err) {
+                reject(err); // Reject the Promise with the error
+            }
+        });
+
+    },
     updateProject: async (projectId, newData) => {
         return new Promise(async (resolve, reject) => {
             try {
