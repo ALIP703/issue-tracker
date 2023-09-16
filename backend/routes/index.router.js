@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var admin_helper = require('../helper/admin.helper')
-const { validationResult } = require('express-validator');
 const verifyToken = require("../middleware/auth.middleware")
 
 router.get('/projects', verifyToken, (req, res) => {
@@ -43,7 +42,6 @@ router.post('/project', verifyToken, (req, res) => {
 })
 
 router.post('/issue', verifyToken, (req, res) => {
-    console.log(req.body);
     if (!(req.body.tracker && req.body.description && req.body.projectId)) {
         return res.status(500).json({ message: "An error occurred!" });
     }
