@@ -185,10 +185,75 @@ module.exports = {
                     }
                 });
             } catch (err) {
-                console.log('test');
                 reject(err); // Reject the Promise with the error
             }
         });
 
-    }
+    },
+    updateProject: async (projectId, newData) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Create arrays to store SET and VALUES clauses for the SQL query
+                const setClauses = [];
+                const values = [];
+
+                // Check if a new name is provided
+                if (newData.name !== undefined) {
+                    setClauses.push('name = ?');
+                    values.push(newData.name);
+                }
+
+                // Check if a new description is provided
+                if (newData.description !== undefined) {
+                    setClauses.push('description = ?');
+                    values.push(newData.description);
+                }
+
+                // Check if a new status is provided
+                if (newData.status !== undefined) {
+                    setClauses.push('status = ?');
+                    values.push(newData.status);
+                }
+
+                // Ensure there are valid updates to perform
+                if (setClauses.length === 0) {
+                    reject(new Error("No valid updates provided"));
+                    return;
+                }
+
+                // Construct the SQL query to check for existing records with the same name or description
+                const queryCheck = "SELECT COUNT(*) AS count FROM projects WHERE (name = ? OR description = ?)";
+                const valuesCheck = [newData.name, newData.description];
+
+                // Execute the SELECT query to check for existing records
+                db.query(queryCheck, valuesCheck, function (errCheck, resultCheck) {
+                    if (errCheck) {
+                        reject(errCheck);
+                    } else {
+                        const recordCount = resultCheck[0].count;
+
+                        // If recordCount is greater than 0, it means a matching record exists
+                        if (recordCount > 0) {
+                            reject(new Error("Name or description already exists"));
+                        } else {
+                            // Construct the SQL query to update the project
+                            const queryUpdate = `UPDATE projects SET ${setClauses.join(', ')} WHERE id = ?`;
+                            values.push(projectId);
+
+                            // Execute the UPDATE query to update the project
+                            db.query(queryUpdate, values, function (errUpdate, resultUpdate) {
+                                if (errUpdate) {
+                                    reject(errUpdate);
+                                } else {
+                                    resolve(resultUpdate.affectedRows);
+                                }
+                            });
+                        }
+                    }
+                });
+            } catch (err) {
+                reject(err); // Reject the Promise with the error
+            }
+        });
+    },
 }

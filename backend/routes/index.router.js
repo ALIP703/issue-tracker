@@ -37,7 +37,6 @@ router.post('/project', verifyToken, (req, res) => {
             res.status(200).json({ data: response, message: "Projects create successfully" });
         })
         .catch((err) => {
-            console.log(err.message);
             // Handle errors from createAdmin function
             res.status(500).json({ message: err.message ?? "An error occurred!" });
         });
@@ -49,7 +48,17 @@ router.get('/project/:id', verifyToken, (req, res) => {
             res.status(200).json({ data: response, message: "Project fetch successfully" });
         })
         .catch((err) => {
-            console.log(err.message);
+            // Handle errors from createAdmin function
+            res.status(500).json({ message: err.message ?? "An error occurred!" });
+        });
+})
+
+router.put('/project/:id', verifyToken, (req, res) => {
+    admin_helper.updateProject(req.params.id, req.body)
+        .then((response) => {
+            res.status(200).json({ data: response, message: "Project Updated successfully" });
+        })
+        .catch((err) => {
             // Handle errors from createAdmin function
             res.status(500).json({ message: err.message ?? "An error occurred!" });
         });
