@@ -13,6 +13,8 @@ function ViewProject() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const projectId = queryParams.get("id");
+  const [issueSearchData, setIssueSearchData] = React.useState("");
+
   const [projectData, setProjectData] = React.useState({
     id: 0,
     name: "",
@@ -52,7 +54,7 @@ function ViewProject() {
     setShowModal(true);
   };
 
-  const handleConfirmAction = async() => {
+  const handleConfirmAction = async () => {
     await ApiServices.updateProject(projectData.id, { status: "closed" })
       .then(async (res) => {
         console.log(res);
@@ -66,6 +68,19 @@ function ViewProject() {
         console.error(err);
       });
     handleCloseModal();
+  };
+  const handleSearch = async (event, searchData) => {
+    event.preventDefault();
+    ApiServices.issuesBySearch(searchData)
+      .then((res) => {
+        setProjectData({ ...projectData, issues: res.data.data });
+      })
+      .catch(() => {
+        setProjectData({
+          ...projectData,
+          issues: null,
+        });
+      });
   };
 
   React.useEffect(() => {
@@ -153,17 +168,22 @@ function ViewProject() {
                     <Dropdown.Item>Closed</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                <form className="d-flex">
+                <form
+                  className="d-flex"
+                  onSubmit={(event) => {
+                    handleSearch(event, issueSearchData);
+                  }}
+                >
                   <input
                     className="form-control me-2"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
-                    // value={searchData}
+                    value={issueSearchData}
                     name="search"
-                    // onChange={(event) => {
-                    //   setSearchData(event.target.value);
-                    // }}
+                    onChange={(event) => {
+                      setIssueSearchData(event.target.value);
+                    }}
                     style={{ height: "2rem", marginRight: "1rem" }}
                   />
                   <Button

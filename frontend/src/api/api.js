@@ -31,4 +31,7 @@ export const ApiServices = {
     updateProject: (id, data) => {
         return api.put(`/admin/project/${id}`, data);
     },
+    issuesBySearch: (data) => {
+        return api.post("/admin/issues", { search: data });
+    },
 }
