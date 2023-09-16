@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../../component/NavBar/NavBar";
 import Button from "react-bootstrap/Button";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ApiServices } from "../../api/api";
 import Card from "react-bootstrap/Card";
 import "./ViewProject.css";
@@ -18,6 +18,7 @@ function ViewProject() {
     tracker: null,
     status: null,
   });
+  const navigate = useNavigate();
 
   const [projectData, setProjectData] = React.useState({
     id: 0,
@@ -141,7 +142,9 @@ function ViewProject() {
                 </Button>
               )}
 
-              <Button variant="secondary" style={{ marginRight: "1rem" }}>
+              <Button variant="secondary" style={{ marginRight: "1rem" }} onClick={()=>{
+                navigate(`/add-issue?projectId=${projectData.id}`)
+              }}>
                 Create Issue
               </Button>
             </div>

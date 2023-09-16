@@ -5,6 +5,7 @@ import AddProject from "./Pages/AddProject/AddProject";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import ViewProject from "./Pages/ViewProject/ViewProject";
+import AddIssue from "./Pages/AddIssue/AddIssue";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/add-project" element={<AddProject />} />
         <Route path="/project" element={<ViewProject />} />
+        <Route path="/add-issue" element={<AddIssue />} />
       </Routes>
     </>
   );

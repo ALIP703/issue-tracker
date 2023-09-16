@@ -43,6 +43,7 @@ router.post('/project', verifyToken, (req, res) => {
 })
 
 router.post('/issue', verifyToken, (req, res) => {
+    console.log(req.body);
     if (!(req.body.tracker && req.body.description && req.body.projectId)) {
         return res.status(500).json({ message: "An error occurred!" });
     }

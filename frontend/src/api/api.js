@@ -28,6 +28,9 @@ export const ApiServices = {
     createProject: (data) => {
         return api.post("/admin/project", data);
     },
+    createIssue: (data) => {
+        return api.post("/admin/issue", data);
+    },
     updateProject: (id, data) => {
         return api.put(`/admin/project/${id}`, data);
     },
