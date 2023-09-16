@@ -62,6 +62,7 @@ function HomePage() {
             </form>
           </div>
         </div>
+        <div style={{marginBottom:'3rem'}}>
         {projects &&
           projects.map((item, index) => (
             <ProjectCard
@@ -73,6 +74,7 @@ function HomePage() {
               issueCount={item?.issueCount}
             />
           ))}
+          </div>
       </div>
     </div>
   );

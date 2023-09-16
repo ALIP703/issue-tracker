@@ -13,8 +13,14 @@ api.interceptors.request.use((config) => {
 });
 
 export const ApiServices = {
+    registrationCheck: () => {
+        return api.get("/reg-check");
+    },
     login: (data) => {
         return api.post("/sign-in", data);
+    },
+    register: (data) => {
+        return api.post("/sign-up", data);
     },
     projects: () => {
         return api.get("/admin/projects");

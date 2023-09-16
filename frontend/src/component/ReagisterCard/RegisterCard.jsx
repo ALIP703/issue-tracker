@@ -1,54 +1,62 @@
+import React from "react";
 import { Card, Button, Alert } from "react-bootstrap";
-import "./LoginCard.css";
-import { handleLoginDataChange, useLoginData } from "./Helper";
+import { handleLoginDataChange, useRegisterData } from "./Helper";
 import { useNavigate } from "react-router-dom";
 import { ApiServices } from "../../api/api";
-import React from "react";
+import "./RegisterCard.css";
 
-function LoginCard() {
+function RegisterCard() {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = React.useState(false); // State to control the alert visibility
   const [alertMessage, setAlertMessage] = React.useState(""); // State to store the alert message
 
-  const handleSignIn = async (event, loginData, setLoginData) => {
+  const handleSignUp = async (event, registerData, setRegisterData) => {
     event.preventDefault();
-    await ApiServices.login(loginData)
+    await ApiServices.register(registerData)
       .then((res) => {
-        console.log(res.data);
-        localStorage.setItem('token', res.data.token);
-        setLoginData({
+        localStorage.setItem("token", res.data.token);
+        setRegisterData({
           username: "",
           password: "",
         });
         setShowAlert(true);
-        setAlertMessage("User Login successfully");
+        setAlertMessage("Admin created successfully");
         setTimeout(() => {
           navigate("/");
-        }, 1000); // Redirect after 1 seconds
+        }, 1000); // Redirect after 2 seconds
       })
       .catch((err) => {
         setShowAlert(true);
         setAlertMessage(
-          err?.response?.data?.message ?? "Failed to Login"
+          err?.response?.data?.message ?? "Failed to Registration"
         ); // Display an error message
       });
   };
 
-  const { loginData, setLoginData } = useLoginData();
+  const { registerData, setRegisterData } = useRegisterData();
+  React.useEffect(() => {
+    ApiServices.registrationCheck().then((res) => {
+      if (res.data.data == true) {
+        navigate("/login");
+      }
+    });
+  }, [navigate]);
   return (
     <div className="login-container">
       <Card className="card">
-        <h3>Sign-in</h3>
+        <h3>Sign-up</h3>
         <form
-          onSubmit={(event) => handleSignIn(event, loginData, setLoginData)}
+          onSubmit={(event) =>
+            handleSignUp(event, registerData, setRegisterData)
+          }
         >
           <input
             className="form-control"
             placeholder="Username"
             name="username"
-            value={loginData.username}
+            value={registerData.username}
             onChange={(event) => {
-              handleLoginDataChange(event, loginData, setLoginData);
+              handleLoginDataChange(event, registerData, setRegisterData);
             }}
           />
           <input
@@ -56,13 +64,13 @@ function LoginCard() {
             type="password"
             placeholder="Password"
             name="password"
-            value={loginData.password}
+            value={registerData.password}
             onChange={(event) => {
-              handleLoginDataChange(event, loginData, setLoginData);
+              handleLoginDataChange(event, registerData, setRegisterData);
             }}
           />
           <Button className="btn" type="submit">
-            SignIn
+            SignUp
           </Button>
         </form>
         {showAlert && (
@@ -83,4 +91,4 @@ function LoginCard() {
   );
 }
 
-export default LoginCard;
+export default RegisterCard;

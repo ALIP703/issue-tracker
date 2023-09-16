@@ -3,15 +3,34 @@ const bcrypt = require('bcrypt')
 
 
 module.exports = {
-    createAdmin: async (adminData) => {
+    registrationCheck: () => {
         return new Promise(async (resolve, reject) => {
             try {
-                db.query("SELECT * FROM admin WHERE username=?", adminData.username, async function (err, result) {
+                db.query("SELECT username FROM admin", async function (err, result) {
                     if (err) {
                         reject(err);
                     } else {
                         if (result.length > 0) {
-                            reject(new Error("Username is already used"));
+                            resolve(true)
+                        } else {
+                            resolve(false)
+                        }
+                    }
+                })
+            } catch (err) {
+                reject(err); // Reject the Promise with the error
+            }
+        })
+    },
+    createAdmin: async (adminData) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                db.query("SELECT * FROM admin", async function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        if (result.length > 0) {
+                            reject(new Error("Already registered"));
                         } else {
                             hashedPassword = await bcrypt.hash(adminData.password, 10) // encrypt the password
                             let query = "INSERT INTO admin (username, password) VALUES (?, ?)";

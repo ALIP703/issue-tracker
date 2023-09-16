@@ -7,6 +7,7 @@ import "./App.css";
 import ViewProject from "./Pages/ViewProject/ViewProject";
 import AddIssue from "./Pages/AddIssue/AddIssue";
 import ViewIssue from "./Pages/ViewIssue/ViewIssue";
+import RegisterPage from "./Pages/RegisterPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/add-project" element={<AddProject />} />
         <Route path="/project" element={<ViewProject />} />
         <Route path="/add-issue" element={<AddIssue />} />

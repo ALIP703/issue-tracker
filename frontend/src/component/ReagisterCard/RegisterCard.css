@@ -1,0 +1,25 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+  }
+  
+  .login-container .card {
+    width: 500px;
+    height: 300px;
+    align-items: center;
+  }
+  
+  .login-container .card h3 {
+    margin-top: 30px;
+  }
+  .login-container .card input {
+    margin-top: 18px;
+    width: 300px;
+  }
+  
+  .login-container .card .btn {
+    margin-top: 20px;
+    width: 300px;
+  }
+  

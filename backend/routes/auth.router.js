@@ -43,8 +43,21 @@ router.post('/sign-in', validateSignUpBody, (req, res) => {
     });
 })
 
-router.get('/test', verifyToken, (req, res) => {
-  res.json({ message: "true" })
+
+
+router.get('/reg-check', (req, res) => {
+  admin_helper.registrationCheck()
+      .then((response) => {
+          if (response === true) {
+              res.status(200).json({ data: response, message: "User Already Created" });
+          } else {
+              res.status(200).json({ data: response, message: "User Not Created" });
+          }
+      })
+      .catch((err) => {
+          // Handle errors from createAdmin function
+          res.status(500).json({ message: err.message ?? "An error occurred!" });
+      });
 })
 
 module.exports = router;
