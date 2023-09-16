@@ -104,4 +104,15 @@ router.put('/issue/:id', verifyToken, (req, res) => {
         });
 })
 
+router.get('/issue/:id', verifyToken, (req, res) => {
+    admin_helper.getIssue(req.params.id)
+        .then((response) => {
+            res.status(200).json({ data: response, message: "Issue Fetch successfully" });
+        })
+        .catch((err) => {
+            // Handle errors from createAdmin function
+            res.status(500).json({ message: err.message ?? "An error occurred!" });
+        });
+})
+
 module.exports = router;

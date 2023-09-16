@@ -354,4 +354,21 @@ module.exports = {
             }
         });
     },
+    getIssue: async (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const query = `SELECT * from issues WHERE id = ?`;
+                db.query(query, id, function (errUpdate, resultUpdate) {
+                    if (errUpdate) {
+                        reject(errUpdate);
+                    } else {
+                        console.log(resultUpdate[0]);
+                        resolve(resultUpdate[0]);
+                    }
+                });
+            } catch (err) {
+                reject(err); // Reject the Promise with the error
+            }
+        })
+    }
 }
