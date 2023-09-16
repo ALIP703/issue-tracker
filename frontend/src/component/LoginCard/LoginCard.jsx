@@ -14,7 +14,6 @@ function LoginCard() {
     event.preventDefault();
     await ApiServices.login(loginData)
       .then((res) => {
-        console.log(res.data);
         localStorage.setItem("token", res.data.token);
         setLoginData({
           username: "",

@@ -14,9 +14,9 @@ function ViewProject() {
   const queryParams = new URLSearchParams(location.search);
   const projectId = queryParams.get("id");
   const [issueSearchData, setIssueSearchData] = React.useState({
-    search: null,
-    tracker: null,
-    status: null,
+    search: "",
+    tracker: "",
+    status: "",
   });
   const navigate = useNavigate();
 
@@ -84,10 +84,16 @@ function ViewProject() {
       });
     }
   };
-  
+
   const handleSearch = async (event, searchData) => {
     event.preventDefault();
-    ApiServices.issuesBySearch(searchData)
+    // Convert empty strings to null
+    const cleanedSearchData = {
+      search: searchData.search || null,
+      tracker: searchData.tracker || null,
+      status: searchData.status || null,
+    };
+    ApiServices.issuesBySearch(cleanedSearchData)
       .then((res) => {
         setProjectData({ ...projectData, issues: res.data.data });
       })
@@ -140,9 +146,13 @@ function ViewProject() {
                 </Button>
               )}
 
-              <Button variant="secondary" style={{ marginRight: "1rem" }} onClick={()=>{
-                navigate(`/add-issue?projectId=${projectData.id}`)
-              }}>
+              <Button
+                variant="secondary"
+                style={{ marginRight: "1rem" }}
+                onClick={() => {
+                  navigate(`/add-issue?projectId=${projectData.id}`);
+                }}
+              >
                 Create Issue
               </Button>
             </div>

@@ -26,17 +26,25 @@ function HomePage() {
       .then((res) => {
         setProjects(res.data.data);
       })
-      .catch();
-  }, []);
+      .catch((err) => {
+        if (err?.response?.status === 401) {
+          navigate('/login')
+        }
+      });
+  }, [navigate]);
   return (
     <div>
       <NavBar />
       <div className="container-fluid project-cards">
         <div className="container-fluid project-cards d-flex justify-content-between align-items-center">
           <div>
-            <Button onClick={()=>{
-              navigate('/add-project')
-            }}>Create Project</Button>
+            <Button
+              onClick={() => {
+                navigate("/add-project");
+              }}
+            >
+              Create Project
+            </Button>
           </div>
           <div>
             <form
@@ -62,19 +70,19 @@ function HomePage() {
             </form>
           </div>
         </div>
-        <div style={{marginBottom:'3rem'}}>
-        {projects &&
-          projects.map((item, index) => (
-            <ProjectCard
-              key={index} // Make sure to include a unique key for each mapped component
-              id={item.id}
-              name={item.name}
-              description={item.description}
-              status={item.status}
-              issueCount={item?.issueCount}
-            />
-          ))}
-          </div>
+        <div style={{ marginBottom: "3rem" }}>
+          {projects &&
+            projects.map((item, index) => (
+              <ProjectCard
+                key={index} // Make sure to include a unique key for each mapped component
+                id={item.id}
+                name={item.name}
+                description={item.description}
+                status={item.status}
+                issueCount={item?.issueCount}
+              />
+            ))}
+        </div>
       </div>
     </div>
   );
