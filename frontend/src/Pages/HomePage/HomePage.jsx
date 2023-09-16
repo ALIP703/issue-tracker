@@ -11,7 +11,6 @@ function HomePage() {
   const [searchData, setSearchData] = React.useState("");
   const handleSearch = async (event, searchData) => {
     event.preventDefault();
-    console.log(searchData);
     await ApiServices.projectsBySearch({ data: searchData })
       .then((res) => {
         setProjects(res.data.data);

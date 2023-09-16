@@ -362,7 +362,6 @@ module.exports = {
                     if (errUpdate) {
                         reject(errUpdate);
                     } else {
-                        console.log(resultUpdate[0]);
                         resolve(resultUpdate[0]);
                     }
                 });
