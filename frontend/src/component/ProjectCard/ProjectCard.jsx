@@ -1,11 +1,18 @@
 /* eslint-disable react/prop-types */
 import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
 
 function ProjectCard(props) {
-  const { name, description, status, issueCount } = props;
+  const { id, name, description, status, issueCount } = props;
+  const navigate = useNavigate();
   return (
     <div>
-      <Card style={{ marginTop: "1rem" }}>
+      <Card
+        style={{ marginTop: "1rem", cursor: "pointer" }}
+        onClick={() => {
+          navigate(`/project?id=${id}`);
+        }}
+      >
         <Card.Body>
           <div className="d-flex justify-content-between align-items-center">
             <div>

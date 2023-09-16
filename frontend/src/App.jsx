@@ -4,6 +4,7 @@ import HomePage from "./Pages/HomePage/HomePage";
 import AddProject from "./Pages/AddProject/AddProject";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import ViewProject from "./Pages/ViewProject/ViewProject";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/add-project" element={<AddProject />} />
+        <Route path="/project" element={<ViewProject />} />
       </Routes>
     </>
   );

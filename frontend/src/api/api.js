@@ -19,6 +19,9 @@ export const ApiServices = {
     projects: () => {
         return api.get("/admin/projects");
     },
+    project: (id) => {
+        return api.get(`/admin/project/${id}`);
+    },
     projectsBySearch: (data) => {
         return api.post("/admin/projects", data);
     },

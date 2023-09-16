@@ -67,13 +67,11 @@ function HomePage() {
           projects.map((item, index) => (
             <ProjectCard
               key={index} // Make sure to include a unique key for each mapped component
+              id={item.id}
               name={item.name}
               description={item.description}
               status={item.status}
               issueCount={item?.issueCount}
-              onClick={()=>{
-                navigate('/project')
-              }}
             />
           ))}
       </div>
