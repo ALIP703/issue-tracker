@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-// import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 function DynamicModal(props) {

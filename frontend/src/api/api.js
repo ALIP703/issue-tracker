@@ -43,4 +43,7 @@ export const ApiServices = {
     getAllIssues: () => {
         return api.get("/admin/issues");
     },
+    getIssue: (id) => {
+        return api.get(`/admin/issue/${id}`);
+    },
 }

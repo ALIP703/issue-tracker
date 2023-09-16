@@ -8,7 +8,6 @@ function AddIssue() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const projectId = queryParams.get("projectId");
-  console.log(projectId);
   const [userData, setUserData] = React.useState({
     tracker: "",
     description: "",
@@ -25,7 +24,6 @@ function AddIssue() {
         [event.target.name]: event.target.value,
       });
     }
-    console.log(userData);
   };
   const handelOnSubmit = async (event, userData, setUserData) => {
     event.preventDefault();

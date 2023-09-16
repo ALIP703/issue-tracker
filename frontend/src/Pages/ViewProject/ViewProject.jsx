@@ -38,7 +38,6 @@ function ViewProject() {
   const handleOpenProject = async () => {
     await ApiServices.updateProject(projectData.id, { status: "open" })
       .then(async (res) => {
-        console.log(res);
         if (res.status === 200) {
           ApiServices.project(projectId).then((res) => {
             setProjectData(res.data.data);
@@ -62,7 +61,6 @@ function ViewProject() {
   const handleConfirmAction = async () => {
     await ApiServices.updateProject(projectData.id, { status: "closed" })
       .then(async (res) => {
-        console.log(res);
         if (res.status === 200) {
           ApiServices.project(projectId).then((res) => {
             setProjectData(res.data.data);

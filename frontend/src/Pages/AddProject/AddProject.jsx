@@ -39,7 +39,6 @@ function AddProject() {
         });
       })
       .catch((err) => {
-        console.log(err);
         setShowAlert(true);
         setAlertMessage(err?.response?.data?.message ?? "Failed to create project"); // Display an error message
       });
