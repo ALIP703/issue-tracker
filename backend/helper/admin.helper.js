@@ -301,7 +301,6 @@ module.exports = {
     updateIssueStatus: async (issueId, newData) => {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log(newData);
                 // Construct the SQL query to update the project
                 const queryUpdate = `UPDATE issues SET status=? WHERE id = ?`;
 

@@ -126,9 +126,6 @@ function ViewProject() {
                 <Button
                   variant="danger"
                   style={{ marginRight: "1rem" }}
-                  // onClick={() => {
-                  //   handleCloseProject();
-                  // }}
                   onClick={handleOpenModal}
                 >
                   Close Project
@@ -241,6 +238,8 @@ function ViewProject() {
                   description={item.description}
                   createdAt={item.createdAt}
                   status={item.status}
+                  projectId={projectData.id}
+                  setProjectData={setProjectData}
                 />
               ))}
           </div>
