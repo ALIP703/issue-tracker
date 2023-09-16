@@ -16,7 +16,6 @@ router.get('/projects', verifyToken, (req, res) => {
 })
 
 router.post('/projects', verifyToken, (req, res) => {
-    console.log(req.body.data);
     if (req.body.data != undefined) {
         admin_helper.getProjectsBySearch(req.body.data)
             .then((response) => {
@@ -28,6 +27,7 @@ router.post('/projects', verifyToken, (req, res) => {
             });
     }
 })
+
 router.post('/project', verifyToken, (req, res) => {
     if (!(req.body.name && req.body.description)) {
         return res.status(500).json({ message: "An error occurred!" });
@@ -35,6 +35,18 @@ router.post('/project', verifyToken, (req, res) => {
     admin_helper.createProject(req.body)
         .then((response) => {
             res.status(200).json({ data: response, message: "Projects create successfully" });
+        })
+        .catch((err) => {
+            console.log(err.message);
+            // Handle errors from createAdmin function
+            res.status(500).json({ message: err.message ?? "An error occurred!" });
+        });
+})
+
+router.get('/project/:id', verifyToken, (req, res) => {
+    admin_helper.getProjectById(req.params.id)
+        .then((response) => {
+            res.status(200).json({ data: response, message: "Project fetch successfully" });
         })
         .catch((err) => {
             console.log(err.message);
