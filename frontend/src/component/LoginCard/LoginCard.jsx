@@ -15,7 +15,7 @@ function LoginCard() {
     await ApiServices.login(loginData)
       .then((res) => {
         console.log(res.data);
-        localStorage.setItem('token', res.data.token);
+        localStorage.setItem("token", res.data.token);
         setLoginData({
           username: "",
           password: "",
@@ -28,9 +28,7 @@ function LoginCard() {
       })
       .catch((err) => {
         setShowAlert(true);
-        setAlertMessage(
-          err?.response?.data?.message ?? "Failed to Login"
-        ); // Display an error message
+        setAlertMessage(err?.response?.data?.message ?? "Failed to Login"); // Display an error message
       });
   };
 
@@ -46,6 +44,7 @@ function LoginCard() {
             className="form-control"
             placeholder="Username"
             name="username"
+            required
             value={loginData.username}
             onChange={(event) => {
               handleLoginDataChange(event, loginData, setLoginData);
@@ -54,6 +53,7 @@ function LoginCard() {
           <input
             className="form-control"
             type="password"
+            required
             placeholder="Password"
             name="password"
             value={loginData.password}

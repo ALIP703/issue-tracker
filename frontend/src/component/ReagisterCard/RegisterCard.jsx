@@ -53,6 +53,7 @@ function RegisterCard() {
           <input
             className="form-control"
             placeholder="Username"
+            required
             name="username"
             value={registerData.username}
             onChange={(event) => {
@@ -63,6 +64,7 @@ function RegisterCard() {
             className="form-control"
             type="password"
             placeholder="Password"
+            required
             name="password"
             value={registerData.password}
             onChange={(event) => {

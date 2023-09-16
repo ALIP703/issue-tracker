@@ -78,6 +78,7 @@ function AddIssue() {
               onChange={(event) => {
                 handleOnChange(event, userData, setUserData);
               }}
+              required
             >
               <option value="Bug">Bug</option>
               <option value="Feature">Feature</option>
@@ -89,6 +90,7 @@ function AddIssue() {
               as="textarea"
               rows={3}
               name="description"
+              required
               value={userData.description}
               onChange={(event) => {
                 handleOnChange(event, userData, setUserData);

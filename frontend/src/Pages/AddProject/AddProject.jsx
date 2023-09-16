@@ -70,6 +70,7 @@ function AddProject() {
             <Form.Control
               type="text"
               name="name"
+              required
               value={userData.name}
               onChange={(event) => {
                 handleOnChange(event, userData, setUserData);
