@@ -1,1 +1,3 @@
-# create .env.development and consider .env.sample
+## Note
+- create .env.development
+- consider .env.sample
