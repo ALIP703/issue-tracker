@@ -7,6 +7,7 @@ import { ApiServices } from "../../api/api";
 import Card from "react-bootstrap/Card";
 import "./ViewProject.css";
 import IssueCard from "../../component/IssueCard/IssueCard";
+import DynamicModal from "../../component/DynamicModal/DynamicModal";
 
 function ViewProject() {
   const location = useLocation();
@@ -27,20 +28,6 @@ function ViewProject() {
       },
     ],
   });
-  const handleCloseProject = async () => {
-    await ApiServices.updateProject(projectData.id, { status: "closed" })
-      .then(async (res) => {
-        console.log(res);
-        if (res.status === 200) {
-          ApiServices.project(projectId).then((res) => {
-            setProjectData(res.data.data);
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
   const handleOpenProject = async () => {
     await ApiServices.updateProject(projectData.id, { status: "open" })
       .then(async (res) => {
@@ -55,6 +42,32 @@ function ViewProject() {
         console.error(err);
       });
   };
+  const [showModal, setShowModal] = React.useState(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirmAction = async() => {
+    await ApiServices.updateProject(projectData.id, { status: "closed" })
+      .then(async (res) => {
+        console.log(res);
+        if (res.status === 200) {
+          ApiServices.project(projectId).then((res) => {
+            setProjectData(res.data.data);
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    handleCloseModal();
+  };
+
   React.useEffect(() => {
     ApiServices.project(projectId).then((res) => {
       setProjectData(res.data.data);
@@ -69,13 +82,23 @@ function ViewProject() {
           <div className="d-flex justify-content-between align-items-center">
             <h1>{projectData.name}</h1>
             <div>
+              {/* Use the DynamicModal component */}
+              <DynamicModal
+                showModal={showModal}
+                closeModal={handleCloseModal}
+                onConfirm={handleConfirmAction}
+                title="Confirmation"
+                message="Are you sure you want to Change project status?"
+                confirmText="Confirm"
+              />
               {projectData?.status === "open" ? (
                 <Button
                   variant="danger"
                   style={{ marginRight: "1rem" }}
-                  onClick={() => {
-                    handleCloseProject();
-                  }}
+                  // onClick={() => {
+                  //   handleCloseProject();
+                  // }}
+                  onClick={handleOpenModal}
                 >
                   Close Project
                 </Button>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import NavBar from "../../component/NavBar/NavBar";
 import { ApiServices } from "../../api/api";
@@ -10,6 +10,9 @@ function AddProject() {
     name: "",
     description: "",
   });
+  const [showAlert, setShowAlert] = React.useState(false); // State to control the alert visibility
+  const [alertMessage, setAlertMessage] = React.useState(""); // State to store the alert message
+
   const navigate = useNavigate();
   const handleOnChange = (event, userData, setUserData) => {
     if (userData) {
@@ -23,9 +26,12 @@ function AddProject() {
     event.preventDefault();
     await ApiServices.createProject(userData)
       .then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          navigate("/");
+        if (res.status === 200) {
+          setShowAlert(true);
+          setAlertMessage("Project created successfully");
+          setTimeout(() => {
+            navigate("/");
+          }, 1000); // Redirect after 2 seconds
         }
         setUserData({
           name: "",
@@ -33,7 +39,9 @@ function AddProject() {
         });
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
+        setShowAlert(true);
+        setAlertMessage(err?.response?.data?.message ?? "Failed to create project"); // Display an error message
       });
   };
   return (
@@ -47,6 +55,17 @@ function AddProject() {
           }}
         >
           <h1>Create Project</h1>
+          {showAlert && (
+            <Alert
+              variant={
+                alertMessage.includes("successfully") ? "success" : "danger"
+              }
+              onClose={() => setShowAlert(false)}
+              dismissible
+            >
+              {alertMessage}
+            </Alert>
+          )}
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
             <Form.Label>Project Name</Form.Label>
             <Form.Control
