@@ -151,7 +151,7 @@ module.exports = {
                     `SELECT p.id AS id, p.name AS name, p.description AS description, p.status AS status, COUNT(CASE WHEN i.status = 'open' THEN i.id ELSE NULL END) AS issueCount 
                     FROM projects p 
                     LEFT JOIN issues i ON p.id = i.projectId 
-                    WHERE p.name LIKE ? 
+                    WHERE p.name LIKE ? OR p.description LIKE ?
                     GROUP BY p.id, p.name`,
                     [`%${searchTerm}%`], // Use placeholders to prevent SQL injection
                     async function (err, result) {
