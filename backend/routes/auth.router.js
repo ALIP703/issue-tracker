@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const jwt = require("jsonwebtoken");
 var admin_helper = require('../helper/admin.helper')
+var auth_controller = require('../controller/auth.controller')
 const { validationResult } = require('express-validator');
 const verifyToken = require("../middleware/auth.middleware")
 const { validateSignUpBody } = require('../config/validation')
@@ -46,7 +47,7 @@ router.post('/sign-in', validateSignUpBody, (req, res) => {
 
 
 router.get('/reg-check', (req, res) => {
-  admin_helper.registrationCheck()
+  auth_controller.registrationCheck()
       .then((response) => {
           if (response === true) {
               res.status(200).json({ data: response, message: "User Already Created" });
