@@ -15,7 +15,7 @@ router.post('/sign-up', validateSignUpBody, (req, res) => {
     return res.status(400).json({ errors: errors.array(), message: "body validation failed!" });
   }
   //service
-  admin_helper.createAdmin(req.body)
+  auth_controller.createAdmin(req.body)
     .then((response) => {
       res.status(200).json({ insertedId: response, message: "Admin Created" });
     })
@@ -32,7 +32,7 @@ router.post('/sign-in', validateSignUpBody, (req, res) => {
     return res.status(400).json({ errors: errors.array(), message: "body validation failed!" });
   }
   //service
-  admin_helper.login(req.body)
+  auth_controller.login(req.body)
     .then((response) => {
       let token = jwt.sign(response, process.env.secret, { expiresIn: 86400 })
       
