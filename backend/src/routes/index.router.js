@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var admin_helper = require('../helper/admin.helper')
 const verifyToken = require("../middleware/auth.middleware")
+var user_controller = require('../controllers/user.controller')
 
 router.get('/projects', verifyToken, (req, res) => {
-    admin_helper.getProjects()
+    user_controller.getProjects()
         .then((response) => {
             res.status(200).json({ data: response, message: "Projects successfully fetch" });
         })
@@ -16,7 +17,7 @@ router.get('/projects', verifyToken, (req, res) => {
 
 router.post('/projects', verifyToken, (req, res) => {
     if (req.body.data != undefined) {
-        admin_helper.getProjectsBySearch(req.body.data)
+        user_controller.getProjectsBySearch(req.body.data)
             .then((response) => {
                 res.status(200).json({ data: response, message: "Projects successfully fetch" });
             })

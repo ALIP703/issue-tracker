@@ -1,5 +1,5 @@
 
-var auth_service = require('../model/auth.service')
+var auth_service = require('../services/auth.service')
 
 module.exports = {
     registrationCheck: () => {
