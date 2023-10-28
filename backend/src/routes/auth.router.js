@@ -24,28 +24,8 @@ router.post('/sign-up', validateSignUpBody, (req, res) => {
     });
 });
 
-router.post('/sign-in', validateSignUpBody, (req, res) => {
-  // body validation error
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array(), message: "body validation failed!" });
-  }
-  //service
-  auth_controller.login(req.body)
-    .then((response) => {
-      let token = jwt.sign(response, process.env.secret, { expiresIn: 86400 })
-      
-      res.status(200).json({ auth: true, token, message: "Admin Login" });
-    })
-    .catch((err) => {
-      // Handle errors from createAdmin function
-      res.status(500).json({ message: err.message ?? "An error occurred during admin creation!" });
-    });
-})
-
-
-
-router.get('/reg-check',auth_controller.registrationCheck)
+router.post('/sign-in', validateSignUpBody,auth_controller.login)
+router.get('/reg-check', auth_controller.registrationCheck)
 
 
 module.exports = router;
