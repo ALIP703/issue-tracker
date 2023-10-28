@@ -45,19 +45,7 @@ router.post('/sign-in', validateSignUpBody, (req, res) => {
 
 
 
-router.get('/reg-check', (req, res) => {
-  auth_controller.registrationCheck()
-      .then((response) => {
-          if (response === true) {
-              res.status(200).json({ data: response, message: "User Already Created" });
-          } else {
-              res.status(200).json({ data: response, message: "User Not Created" });
-          }
-      })
-      .catch((err) => {
-          // Handle errors from createAdmin function
-          res.status(500).json({ message: err.message ?? "An error occurred!" });
-      });
-})
+router.get('/reg-check',auth_controller.registrationCheck)
+
 
 module.exports = router;
