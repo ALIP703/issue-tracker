@@ -23,18 +23,16 @@ module.exports = {
                 res.status(200).json({ auth: true, token, message: "Admin Login" });
             })
         } catch (err) {
-            res.status(500).json({ message: err.message ?? "An error occurred during admin creation!" });
+            res.status(500).json({ message: err.message ?? "An error occurred during admin Login!" });
         }
     },
-    createAdmin: async (adminData) => {
-        return new Promise(async (resolve, reject) => {
+    createAdmin: async (req, res) => {
             try {
-                await auth_service.createAdmin(adminData).then((res) => {
-                    resolve(res)
+                await auth_service.createAdmin(req.body).then((response) => {
+                    res.status(200).json({ insertedId: response, message: "Admin Created" });
                 })
             } catch (err) {
-                reject(err); // Reject the Promise with the error
+                res.status(500).json({ message: err.message || "An error occurred during admin creation!" });
             }
-        });
     },
 }
