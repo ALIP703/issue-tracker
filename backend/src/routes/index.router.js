@@ -4,16 +4,7 @@ var admin_helper = require('../helper/admin.helper')
 const verifyToken = require("../middleware/auth.middleware")
 var user_controller = require('../controllers/user.controller')
 
-router.get('/projects', verifyToken, (req, res) => {
-    user_controller.getProjects()
-        .then((response) => {
-            res.status(200).json({ data: response, message: "Projects successfully fetch" });
-        })
-        .catch((err) => {
-            // Handle errors from createAdmin function
-            res.status(500).json({ message: err.message ?? "An error occurred during admin creation!" });
-        });
-})
+router.get('/projects', verifyToken,user_controller.getProjects)
 
 router.post('/projects', verifyToken, (req, res) => {
     if (req.body.data != undefined) {
