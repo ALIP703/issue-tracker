@@ -11,15 +11,21 @@ module.exports = {
                 res.status(500).json({ message: err.message ?? "An error occurred during Projects fetching!" });
             }
     },
-    getProjectsBySearch: async (data) => {
-        return new Promise(async (resolve, reject) => {
+    getProjectsBySearch: async (req, res) => {
             try {
-                await user_service.getProjectsBySearch(data).then((res) => {
-                    resolve(res)
-                })
+                if (req.body.data != undefined) {
+                    user_service.getProjectsBySearch(req.body.data)
+                        .then((response) => {
+                            res.status(200).json({ data: response, message: "Projects successfully fetch" });
+                        })
+                        .catch((err) => {
+                            res.status(500).json({ message: err.message ?? "An error occurred!" });
+                        });
+                }
             } catch (err) {
-                reject(err); // Reject the Promise with the error
+                res.status(500).json({ message: err.message ?? "An error occurred!" });
             }
-        })
     },
+    createProject: async (req, res) => {
+    }
 }

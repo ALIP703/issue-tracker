@@ -3,7 +3,6 @@ var router = express.Router();
 const jwt = require("jsonwebtoken");
 var auth_controller = require('../controllers/auth.controller')
 const { validationResult } = require('express-validator');
-const verifyToken = require("../middleware/auth.middleware")
 const { validateSignUpBody } = require('../config/validation')
 
 
